@@ -28,14 +28,9 @@ if (EnvVars.nodeEnv === NodeEnvs.Dev) {
 if (EnvVars.nodeEnv === NodeEnvs.Production) {
     app.use(helmet());
 }
-if (EnvVars.nodeEnv === NodeEnvs.Dev) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    app.use(cors({ origin: "*" }));
-}else if(EnvVars.nodeEnv==NodeEnvs.Production){
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    app.use(cors({ origin: "https://emam546.github.io" }));
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+app.use(cors({ origin: "*" }));
 
-}
 // **** Add API routes **** //
 
 // Add APIs
