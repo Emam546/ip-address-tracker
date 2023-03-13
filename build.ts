@@ -26,9 +26,9 @@ import childProcess from "child_process";
 /**
  * Remove file
  */
-function remove(loc: string): Promise<void> {
+async function remove(loc: string): Promise<void> {
     return new Promise((res, rej) => {
-        if (fs.existsSync(loc)) return res();
+        if (!fs.existsSync(loc)) return res();
         return fs.remove(loc, (err) => {
             return !!err ? rej(err) : res();
         });
@@ -38,14 +38,8 @@ function remove(loc: string): Promise<void> {
 /**
  * Copy file.
  */
-function copy(src: string, dest: string): Promise<void> {
-    return new Promise((res, rej) => {
-        if (fs.existsSync(src)) return res();
-
-        return fs.copy(src, dest, (err) => {
-            return !!err ? rej(err) : res();
-        });
-    });
+async function copy(src: string, dest: string): Promise<void> {
+    if (fs.existsSync(src)) await fs.copy(src, dest);
 }
 
 /**
