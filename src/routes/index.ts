@@ -16,13 +16,12 @@ const Limiter = rateLimit({
     windowMs: 10 * 60 * 1000,
     max: 5,
 });
-router.use(Limiter);
 const cache = apicache.middleware;
 
 const onlyStatus200: RequestHandler = (req, res) => res.statusCode === 200;
 
-const cacheSuccesses = cache("5 minutes", onlyStatus200);
-router.get("/", cacheSuccesses, async (req, res) => {
+const cacheSuccesses = cache("1 day", onlyStatus200);
+router.get("/", cacheSuccesses,Limiter, async (req, res) => {
     try {
         const params = new url.URLSearchParams({
             apiKey: API_KEY,
@@ -30,7 +29,7 @@ router.get("/", cacheSuccesses, async (req, res) => {
         });
         const respond = await needle(
             "get",
-            `https://geo.ipify.org/api/v2/country?${params}`
+            `https://geo.ipify.org/api/v2/country,city?${params}`
         );
         res.json(respond.body);
     } catch (error) {
