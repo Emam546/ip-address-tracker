@@ -1,0 +1,12 @@
+#root {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    height: 100vh;
+    overflow: hidden;
+}
+.leaflet-container {
+    user-select: none;
+    position: relative !important;
+    z-index: 2 !important;
+}
