@@ -1,12 +1,18 @@
+@import "../custrom";
 #root {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    height: 100vh;
-    overflow: hidden;
+    height: fit-content;
+    min-height: 100vh;
 }
 .leaflet-container {
     user-select: none;
     position: relative !important;
     z-index: 2 !important;
+    min-height: rem(700);
+    flex: 1 !important;
+    .leaflet-control-attribution{
+        display: none;
+    }
 }

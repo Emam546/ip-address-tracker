@@ -2,7 +2,7 @@ import { AddressActions, useAppSelector } from "../store";
 import { useEffect, useRef, useState } from "react";
 import "./style.scss";
 import { useSelector, useDispatch } from "react-redux";
-import LoadingCircle from "../loading";
+import LoadingCircle from "./loading";
 function ValidateIPaddress(ip: string) {
     if (
         /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(
@@ -13,11 +13,31 @@ function ValidateIPaddress(ip: string) {
     }
     return false;
 }
+function LoadingInfo() {
+    return (
+        <>
+            <div className="px-3 flex items-center justify-center min-w-[5rem] md:w-[12rem]">
+                <LoadingCircle />
+            </div>
+            <div className="px-3 flex items-center justify-center min-w-[5rem] md:w-[12rem]">
+                <LoadingCircle />
+            </div>
+            <div className="px-3 flex items-center justify-center min-w-[5rem] md:w-[12rem]">
+                <LoadingCircle />
+            </div>
+            <div className="px-3 flex items-center justify-center min-w-[5rem] md:w-[12rem]">
+                <LoadingCircle />
+            </div>
+        </>
+    );
+}
 export default function Header() {
     const data = useAppSelector((state) => state.address.data);
+    const isLoading = useAppSelector((state) => state.address.isLoading);
+    const errorLoading = useAppSelector((state) => state.address.error);
     const container = useRef<HTMLDivElement>(null);
     const dataContainer = useRef<HTMLDivElement>(null);
-    const [error, setError] = useState<boolean>(false);
+    const [errorState, setError] = useState<boolean>(false);
     const dispatch = useDispatch();
     useEffect(() => {
         const resize = () => {
@@ -35,9 +55,14 @@ export default function Header() {
                 <h1 className="text-center text-white py-8 text-3xl font-semibold">
                     IP Address Tracker
                 </h1>
-                {error && (
-                    <h4 className="text-center py-4 text-xl font-semibold">
+                {errorState && (
+                    <h4 className="text-center py-4 text-xl font-semibold text-warning">
                         A Wrong Ip Address Formate
+                    </h4>
+                )}
+                {errorLoading && (
+                    <h4 className="text-center py-4 text-xl font-semibold text-warning">
+                        {errorLoading.message}
                     </h4>
                 )}
 
@@ -74,61 +99,64 @@ export default function Header() {
                         />
                     </button>
                 </form>
-
-                {data && (
-                    <div
-                        ref={container}
-                        className="relative"
-                    >
-                        <div className="absolute w-full top-[100%] left-0 translate-y-[-50%]">
-                            <div
-                                ref={dataContainer}
-                                className="px-6 z-[100] py-10  bg-white rounded-xl text-center mx-auto md:text-left md:w-fit grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-6"
-                            >
-                                <div className="px-3">
-                                    <>
-                                        <h4 className="text-dark-gray tracking-[2.0px] font-medium text-xs">
-                                            IP ADDRESS
-                                        </h4>
-                                        <h1 className="text-very-dark-gray text-2xl font-bold mt-2 tracking-wide break-words">
-                                            {data.ip}
-                                        </h1>
-                                    </>
-                                </div>
-                                <div className="px-3">
-                                    <>
-                                        <h4 className="text-dark-gray tracking-[2.0px] font-medium text-xs">
-                                            LOCATION
-                                        </h4>
-                                        <h1 className="text-very-dark-gray text-2xl font-bold mt-2 tracking-wide break-words">
-                                            {data.location.region}
-                                        </h1>
-                                    </>
-                                </div>
-                                <div className="px-3">
-                                    <>
-                                        <h4 className="text-dark-gray tracking-[2.0px] font-medium text-xs">
-                                            TIMEZONE
-                                        </h4>
-                                        <h1 className="text-very-dark-gray text-2xl font-bold mt-2 tracking-wide break-words">
-                                            UTC {data.location.timezone}
-                                        </h1>
-                                    </>
-                                </div>
-                                <div className="px-3">
-                                    <>
-                                        <h4 className="text-dark-gray tracking-[2.0px] font-medium text-xs">
-                                            ISP
-                                        </h4>
-                                        <h1 className="text-very-dark-gray text-2xl font-bold mt-2 tracking-wide break-words">
-                                            {data.isp}
-                                        </h1>
-                                    </>
-                                </div>
-                            </div>
+                <div
+                    ref={container}
+                    className="relative"
+                >
+                    <div className="absolute w-full top-[100%] left-0 translate-y-[-50%]">
+                        <div
+                            ref={dataContainer}
+                            className="px-6 z-[100] py-10  bg-white rounded-xl text-center mx-auto md:text-left md:w-fit grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-6"
+                        >
+                            {isLoading || !data ? (
+                                <LoadingInfo />
+                            ) : (
+                                <>
+                                    <div className="px-3">
+                                        <>
+                                            <h4 className="text-dark-gray tracking-[2.0px] font-medium text-xs">
+                                                IP ADDRESS
+                                            </h4>
+                                            <h1 className="text-very-dark-gray text-2xl font-bold mt-2 tracking-wide break-words">
+                                                {data.ip}
+                                            </h1>
+                                        </>
+                                    </div>
+                                    <div className="px-3">
+                                        <>
+                                            <h4 className="text-dark-gray tracking-[2.0px] font-medium text-xs">
+                                                LOCATION
+                                            </h4>
+                                            <h1 className="text-very-dark-gray text-2xl font-bold mt-2 tracking-wide break-words">
+                                                {data.location.region}
+                                            </h1>
+                                        </>
+                                    </div>
+                                    <div className="px-3">
+                                        <>
+                                            <h4 className="text-dark-gray tracking-[2.0px] font-medium text-xs">
+                                                TIMEZONE
+                                            </h4>
+                                            <h1 className="text-very-dark-gray text-2xl font-bold mt-2 tracking-wide break-words">
+                                                UTC {data.location.timezone}
+                                            </h1>
+                                        </>
+                                    </div>
+                                    <div className="px-3">
+                                        <>
+                                            <h4 className="text-dark-gray tracking-[2.0px] font-medium text-xs">
+                                                ISP
+                                            </h4>
+                                            <h1 className="text-very-dark-gray text-2xl font-bold mt-2 tracking-wide break-words">
+                                                {data.isp}
+                                            </h1>
+                                        </>
+                                    </div>
+                                </>
+                            )}
                         </div>
                     </div>
-                )}
+                </div>
             </nav>
         </>
     );

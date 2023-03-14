@@ -11,6 +11,8 @@ import "leaflet/dist/leaflet.css";
 import { Icon } from "leaflet";
 import { useAppSelector } from "../store";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import LoadingCircle from "../loading";
 const icon = new Icon({
     iconUrl: "./images/icon-location.svg",
     iconSize: [46, 56],
@@ -25,10 +27,8 @@ function MapperWrapper() {
     });
     const map = useMap();
     useEffect(() => {
-        if(position){
-            console.log("SET");
-            map.setView(position,13);
-            // map.setZoom(13);
+        if (position) {
+            map.setView(position, 13);
         }
     }, [position]);
     if (!position) return null;
@@ -46,15 +46,22 @@ function MapperWrapper() {
     );
 }
 function Mapper() {
+    const loadingState = useAppSelector((state) => state.address.isLoading);
+    const error = useAppSelector((state) => state.address.error);
+    if (loadingState) {
+        <div className="h-screen flex justify-center items-center flex-col px-4 max-w-full bg-[#ddd]">
+            <LoadingCircle />
+            <h2 className="text-center max-w-full break-words text-warning font-bold mt-5">
+                {error && JSON.stringify(error)}
+            </h2>
+        </div>;
+    }
     return (
-        <>
-            <MapContainer
-                className="flex-1 relative"
-                zoom={13}
-            >
-                <MapperWrapper />
-            </MapContainer>
-        </>
+        <MapContainer
+            zoom={13}
+        >
+            <MapperWrapper />
+        </MapContainer>
     );
 }
 

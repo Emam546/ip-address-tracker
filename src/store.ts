@@ -22,7 +22,7 @@ export type DataType = {
         type: string;
     };
     isp: string;
-}
+};
 
 const AddressSlice = createSlice({
     name: "address",
@@ -30,6 +30,7 @@ const AddressSlice = createSlice({
         data: null as DataType | null,
         isLoading: true,
         address: null as string | null,
+        error: null as null | any,
     },
     reducers: {
         setData(state, action: { payload: DataType }) {
@@ -40,6 +41,9 @@ const AddressSlice = createSlice({
         },
         setLoadingState(state, action: { payload: boolean }) {
             state.isLoading = action.payload;
+        },
+        setError(state, action: { payload: any }) {
+            state.error = action.payload;
         },
     },
 });
