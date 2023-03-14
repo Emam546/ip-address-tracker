@@ -10,7 +10,6 @@ import LoadingCircle from "./loading";
 function App() {
     const dispatch = useDispatch();
     const address = useAppSelector((state) => state.address.address);
-    const data = useAppSelector((state) => state.address.data);
     const getCurIp = useQuery({
         queryKey: ["curIp"],
         queryFn: () => GetIp(),
@@ -40,13 +39,13 @@ function App() {
         if (query.isError) dispatch(AddressActions.setError(query.error));
         else dispatch(AddressActions.setError(null));
     }, [query.isError]);
-    if (!data)
+    if (getCurIp.isLoading)
         return (
             <div className="h-screen flex justify-center items-center flex-col px-4 max-w-full">
                 <LoadingCircle />
                 {query.isError && (
                     <h2 className="text-center max-w-full break-words text-warning font-bold mt-5">
-                        {JSON.stringify(query.error)}
+                        {JSON.stringify(getCurIp.error)}
                     </h2>
                 )}
             </div>

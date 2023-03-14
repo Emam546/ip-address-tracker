@@ -8,10 +8,9 @@ import {
 import { LatLngExpression } from "leaflet";
 import "./style.scss";
 import "leaflet/dist/leaflet.css";
-import { Icon } from "leaflet";
+import { Icon,latLng } from "leaflet";
 import { useAppSelector } from "../store";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
 import LoadingCircle from "../loading";
 const icon = new Icon({
     iconUrl: "./images/icon-location.svg",
@@ -28,7 +27,7 @@ function MapperWrapper() {
     const map = useMap();
     useEffect(() => {
         if (position) {
-            map.setView(position, 13);
+            map.flyTo(latLng(position), 13);
         }
     }, [position]);
     if (!position) return null;
@@ -58,6 +57,7 @@ function Mapper() {
     }
     return (
         <MapContainer
+            center={[50,50]}
             zoom={13}
         >
             <MapperWrapper />
