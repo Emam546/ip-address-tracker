@@ -33,6 +33,7 @@ function LoadingInfo() {
 }
 export default function Header() {
     const data = useAppSelector((state) => state.address.data);
+    const ipAddress = useAppSelector((state) => state.address.address);
     const isLoading = useAppSelector((state) => state.address.isLoading);
     const errorLoading = useAppSelector((state) => state.address.error);
     const container = useRef<HTMLDivElement>(null);
@@ -86,7 +87,7 @@ export default function Header() {
                         type="text"
                         name="ip"
                         className="flex-1 px-6 font-medium border-none focus:outline-none min-w-0"
-                        defaultValue={data?.ip}
+                        defaultValue={ipAddress||""}
                     />
                     <button
                         type="submit"
@@ -118,7 +119,7 @@ export default function Header() {
                                                 IP ADDRESS
                                             </h4>
                                             <h1 className="text-very-dark-gray text-2xl font-bold mt-2 tracking-wide break-words">
-                                                {data.ip}
+                                                {ipAddress}
                                             </h1>
                                         </>
                                     </div>
@@ -128,7 +129,7 @@ export default function Header() {
                                                 LOCATION
                                             </h4>
                                             <h1 className="text-very-dark-gray text-2xl font-bold mt-2 tracking-wide break-words">
-                                                {data.location.region}
+                                                {data.city} {data.region}
                                             </h1>
                                         </>
                                     </div>
@@ -138,7 +139,7 @@ export default function Header() {
                                                 TIMEZONE
                                             </h4>
                                             <h1 className="text-very-dark-gray text-2xl font-bold mt-2 tracking-wide break-words">
-                                                UTC {data.location.timezone}
+                                                UTC {data.timezone}
                                             </h1>
                                         </>
                                     </div>

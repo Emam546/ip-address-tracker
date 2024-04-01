@@ -8,7 +8,7 @@ import {
 import { LatLngExpression } from "leaflet";
 import "./style.scss";
 import "leaflet/dist/leaflet.css";
-import { Icon,latLng } from "leaflet";
+import { Icon, latLng } from "leaflet";
 import { useAppSelector } from "../store";
 import { useEffect } from "react";
 import LoadingCircle from "../loading";
@@ -19,10 +19,7 @@ const icon = new Icon({
 function MapperWrapper() {
     const position: LatLngExpression | undefined = useAppSelector((state) => {
         if (state.address.data)
-            return [
-                state.address.data.location.lat,
-                state.address.data.location.lng,
-            ];
+            return [state.address.data.lat, state.address.data.lon];
     });
     const map = useMap();
     useEffect(() => {
@@ -57,7 +54,7 @@ function Mapper() {
     }
     return (
         <MapContainer
-            center={[50,50]}
+            center={[50, 50]}
             zoom={13}
         >
             <MapperWrapper />

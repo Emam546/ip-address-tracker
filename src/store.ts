@@ -1,28 +1,22 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
-export type DataType = {
-    ip: string;
-    location: {
-        country: string;
-        region: string;
-        city: string;
-        lat: number;
-        lng: number;
-        postalCode: string;
-        timezone: string;
-        geonameId: number;
-    };
-    domains: string[];
-    as: {
-        asn: number;
-        name: string;
-        route: string;
-        domain: string;
-        type: string;
-    };
+export interface DataType {
+    query: string;
+    status: string;
+    country: string;
+    countryCode: string;
+    region: string;
+    regionName: string;
+    city: string;
+    zip: string;
+    lat: number;
+    lon: number;
+    timezone: string;
     isp: string;
-};
+    org: string;
+    as: string;
+}
 
 const AddressSlice = createSlice({
     name: "address",

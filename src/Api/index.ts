@@ -4,8 +4,15 @@ export async function GetIp(): Promise<string> {
     const res = await axios.get("https://api.ipify.org?format=json");
     return res.data.ip;
 }
-const domain="https://geomapper.onrender.com/api"
-export async function GetIpData(ip:string): Promise<DataType> {
-    const res = await axios.get(`${domain}?ipAddress=${ip}`,{});
+
+export async function GetIpData(ip: string): Promise<DataType> {
+    const res = await axios.get(`http://ip-api.com/json/${ip}`, {
+        params: {
+            auth: "a055f91c-a053-4ffb-b635-c4b3f2f5dc7a",
+            ip,
+        },
+        validateStatus: null,
+    });
+    console.log(res.data);
     return res.data;
 }

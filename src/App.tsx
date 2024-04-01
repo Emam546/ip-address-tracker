@@ -20,7 +20,7 @@ function App() {
     });
     const query = useQuery({
         queryKey: [address],
-        queryFn: () => GetIpData(address || ""),
+        queryFn: () => GetIpData(address!),
         enabled: address != null,
         retry: 0,
         onSuccess(data) {
